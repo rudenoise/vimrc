@@ -25,3 +25,12 @@ autocmd Filetype go setlocal ts=2 sts=2 sw=2 noexpandtab
 autocmd Filetype swift setlocal sts=4 sw=4
 
 execute pathogen#infect()
+
+" ocaml stuff
+autocmd Filetype ocaml setlocal ts=2 sts=2 sw=2 noexpandtab
+" opc indent
+" ln -s ~/code/ocp-indent-vim ~/.vim/bundle/ocp-indent-vim
+" merlin auto-complete
+"let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+"execute "set rtp+=" . g:opamshare . "/merlin/vim"
+"let g:syntastic_ocaml_checkers = ['merlin']
