@@ -10,6 +10,8 @@ set guifont=Monospace\ 14
 filetype plugin indent on
 syntax on
 map <Leader>w :set spell wrap linebreak<CR>
+map <Leader>e :MerlinErrorCheck<CR>
+map <Leader>t :MerlinTypeOf<CR>
 
 au VimEnter * RainbowParenthesesToggle
 au BufEnter * RainbowParenthesesLoadRound
@@ -26,11 +28,10 @@ autocmd Filetype swift setlocal sts=4 sw=4
 
 execute pathogen#infect()
 
-" ocaml stuff
-autocmd Filetype ocaml setlocal ts=2 sts=2 sw=2 noexpandtab
-" opc indent
+" ocaml stuff:
+" opc indent:
 " ln -s ~/code/ocp-indent-vim ~/.vim/bundle/ocp-indent-vim
-" merlin auto-complete
-"let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-"execute "set rtp+=" . g:opamshare . "/merlin/vim"
-"let g:syntastic_ocaml_checkers = ['merlin']
+" merlin auto-complete:
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
+let g:syntastic_ocaml_checkers = ['merlin']
