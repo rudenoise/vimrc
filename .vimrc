@@ -10,8 +10,12 @@ set guifont=Monospace\ 14
 filetype plugin indent on
 syntax on
 map <Leader>w :set spell wrap linebreak<CR>
-map <Leader>e :MerlinErrorCheck<CR>
-map <Leader>t :MerlinTypeOf<CR>
+
+highlight ExtraWhitespace ctermbg=darkgreen guibg=lightgreen
+match ExtraWhitespace /\s\+$/
+
+
+execute pathogen#infect()
 
 au VimEnter * RainbowParenthesesToggle
 au BufEnter * RainbowParenthesesLoadRound
@@ -24,9 +28,6 @@ autocmd Filetype scm setlocal sts=2 sw=2 noexpandtab
 " goLang stuff:
 autocmd Filetype go setlocal ts=2 sts=2 sw=2 noexpandtab
 
-autocmd Filetype swift setlocal sts=4 sw=4
-
-execute pathogen#infect()
 
 " ocaml stuff:
 " opc indent:
@@ -35,6 +36,12 @@ execute pathogen#infect()
 let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
 let g:syntastic_ocaml_checkers = ['merlin']
+map <Leader>e :MerlinErrorCheck<CR>
+map <Leader>t :MerlinTypeOf<CR>
+
+" Swift stuff
+
+autocmd Filetype swift setlocal sts=2 sw=2
 
 let g:syntastic_swift_checkers = ['swiftpm', 'swiftlint']
 set statusline+=%#warningmsg#
@@ -45,3 +52,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" assembly
+autocmd Filetype asm setlocal ts=2 sts=2 sw=2 noexpandtab
+
