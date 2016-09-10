@@ -41,7 +41,7 @@ map <Leader>t :MerlinTypeOf<CR>
 
 " Swift stuff
 
-autocmd Filetype swift setlocal sts=2 sw=2
+autocmd Filetype swift setlocal sts=2 sw=2 noexpandtab
 
 let g:syntastic_swift_checkers = ['swiftpm', 'swiftlint']
 set statusline+=%#warningmsg#
@@ -55,4 +55,5 @@ let g:syntastic_check_on_wq = 0
 
 " assembly
 autocmd Filetype asm setlocal ts=2 sts=2 sw=2 noexpandtab
+autocmd Filetype make setlocal sts=2 sw=2 noexpandtab
 
