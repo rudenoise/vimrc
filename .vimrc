@@ -4,9 +4,10 @@ set expandtab
 set nocompatible
 set nobackup
 set rnu
-set backspace=indent,eol,start 
+set backspace=indent,eol,start
 colorscheme zellner
 set guifont=Monospace\ 14
+filetype plugin on
 filetype plugin indent on
 syntax on
 map <Leader>w :set spell wrap linebreak<CR>
