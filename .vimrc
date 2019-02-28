@@ -11,6 +11,7 @@ filetype plugin on
 filetype plugin indent on
 syntax on
 map <Leader>w :set spell wrap linebreak<CR>
+map <Leader>a :let b:ale_fix_on_save = 0<CR>
 
 highlight ExtraWhitespace ctermbg=darkgreen guibg=lightgreen
 match ExtraWhitespace /\s\+$/
