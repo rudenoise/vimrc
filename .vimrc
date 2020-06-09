@@ -19,6 +19,8 @@ match ExtraWhitespace /\s\+$/
 
 execute pathogen#infect()
 
+set rtp+=/usr/local/opt/fzf
+
 au VimEnter * RainbowParenthesesToggle
 au BufEnter * RainbowParenthesesLoadRound
 au BufEnter * RainbowParenthesesLoadSquare
