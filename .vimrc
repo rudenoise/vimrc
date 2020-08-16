@@ -1,5 +1,5 @@
 set number
-set shiftwidth=4 softtabstop=4
+set shiftwidth=2 softtabstop=2
 set expandtab
 set nocompatible
 set nobackup
@@ -11,26 +11,21 @@ filetype plugin on
 filetype plugin indent on
 syntax on
 map <Leader>w :set spell wrap linebreak<CR>
-map <Leader>a :let b:ale_fix_on_save = 0<CR>
 
 highlight ExtraWhitespace ctermbg=darkgreen guibg=lightgreen
 match ExtraWhitespace /\s\+$/
 
 
-execute pathogen#infect()
 
 set rtp+=/usr/local/opt/fzf
 
-au VimEnter * RainbowParenthesesToggle
-au BufEnter * RainbowParenthesesLoadRound
-au BufEnter * RainbowParenthesesLoadSquare
-au BufEnter * RainbowParenthesesLoadBraces
+call plug#begin('~/.vim/plugged')
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+Plug 'tpope/vim-sensible'
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
+call plug#end()
