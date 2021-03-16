@@ -12,8 +12,12 @@ filetype plugin indent on
 syntax on
 map <Leader>w :set spell wrap linebreak<CR>
 
-highlight ExtraWhitespace ctermbg=darkgreen guibg=lightgreen
-match ExtraWhitespace /\s\+$/
+augroup vimrc_autocmds
+  autocmd BufEnter * highlight OverLength ctermbg=darkgreen guibg=lightgreen
+  autocmd BufEnter * match OverLength /\%89v.*/
+  "autocmd BufWritePre *.py execute ':Black'
+  "autocmd BufWritePre *.py execute ':PyFlake'
+augroup END
 
 
 
@@ -25,6 +29,11 @@ Plug 'tpope/vim-sensible'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+
+Plug 'psf/black', { 'branch': 'stable' }
+Plug 'andviro/flake8-vim'
+
+Plug 'dense-analysis/ale'
 
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
