@@ -8,3 +8,5 @@ au BufNewFile,BufRead *.py
     \ set expandtab
     \ set autoindent
     \ set fileformat=unix
+
+autocmd BufWritePre *.py execute ':Black'
