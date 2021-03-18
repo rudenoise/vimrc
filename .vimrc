@@ -14,9 +14,7 @@ map <Leader>w :set spell wrap linebreak<CR>
 
 augroup vimrc_autocmds
   autocmd BufEnter * highlight OverLength ctermbg=darkgreen guibg=lightgreen
-  autocmd BufEnter * match OverLength /\%89v.*/
-  "autocmd BufWritePre *.py execute ':Black'
-  "autocmd BufWritePre *.py execute ':PyFlake'
+  autocmd BufEnter * match OverLength /\%72v.*/
 augroup END
 
 
