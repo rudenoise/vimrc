@@ -3,10 +3,8 @@ set shiftwidth=2 softtabstop=2
 set expandtab
 set nocompatible
 set nobackup
-set rnu
+" set rnu
 set backspace=indent,eol,start
-colorscheme zellner
-set guifont=Monospace\ 14
 filetype plugin on
 filetype plugin indent on
 syntax on
