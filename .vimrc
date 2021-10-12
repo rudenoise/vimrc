@@ -33,6 +33,8 @@ Plug 'andviro/flake8-vim'
 
 Plug 'dense-analysis/ale'
 
+Plug 'neovim/nvim-lspconfig'
+
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 call plug#end()
