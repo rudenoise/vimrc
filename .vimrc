@@ -26,6 +26,8 @@ Plug 'tpope/vim-sensible'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
+Plug 'jremmen/vim-ripgrep'
+
 Plug 'psf/black', { 'branch': 'stable' }
 Plug 'andviro/flake8-vim'
 
