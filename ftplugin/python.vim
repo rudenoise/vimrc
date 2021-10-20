@@ -9,6 +9,3 @@ au BufNewFile,BufRead *.py
     \ set autoindent
     \ set fileformat=unix
 
-lua << EOF
-require'lspconfig'.pyright.setup{}
-EOF
