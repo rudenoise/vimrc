@@ -48,7 +48,6 @@ call plug#end()
 
 set completeopt=menu,menuone,noselect
 
-
 lua << EOF
 local nvim_lsp = require('lspconfig')
 
@@ -136,3 +135,6 @@ for _, lsp in ipairs(servers) do
   }
 end
 EOF
+
+let g:loaded_python_provider = 0
+let g:python3_host_prog = '~/.asdf/installs/python/3.10.0/bin/python'
