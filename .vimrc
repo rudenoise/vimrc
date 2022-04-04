@@ -3,7 +3,7 @@ set shiftwidth=2 softtabstop=2
 set expandtab
 set nocompatible
 set nobackup
-" set rnu
+set rnu
 set backspace=indent,eol,start
 filetype plugin on
 filetype plugin indent on
@@ -24,19 +24,22 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/nvim-cmp'
 
-" For vsnip user.
+" For vsnip user:
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 
 Plug 'tpope/vim-sensible'
 
+" Search/Navigate:
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 Plug 'jremmen/vim-ripgrep'
 
+" Python bits:
 Plug 'psf/black', { 'branch': 'stable' }
 Plug 'andviro/flake8-vim'
+Plug 'fisadev/vim-isort'
 
 " Plug 'dense-analysis/ale'
 
@@ -44,7 +47,16 @@ Plug 'neovim/nvim-lspconfig'
 
 " Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
+
+" Colour Schemes
+Plug 'jacoborus/tender.vim'
+Plug 'rhysd/vim-color-spring-night'
+Plug 'glepnir/oceanic-material'
+
 call plug#end()
+
+colorscheme tender
+set cursorline cursorcolumn
 
 set completeopt=menu,menuone,noselect
 
