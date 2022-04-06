@@ -11,7 +11,7 @@ syntax on
 map <Leader>w :set spell wrap linebreak<CR>
 
 augroup vimrc_autocmds
-  autocmd BufEnter * highlight OverLength ctermbg=darkgreen guibg=lightgreen
+  autocmd BufEnter * highlight OverLength ctermbg=darkgrey
   autocmd BufEnter * match OverLength /\%72v.*/
 augroup END
 
