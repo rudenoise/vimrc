@@ -12,14 +12,15 @@ map <Leader>w :set spell wrap linebreak<CR>
 
 augroup vimrc_autocmds
   autocmd BufEnter * highlight OverLength ctermbg=darkgrey
-  autocmd BufEnter * match OverLength /\%72v.*/
+  autocmd BufEnter * match OverLength /\%80v.*/
 augroup END
+
+au BufRead,BufNewFile *.md setlocal textwidth=78
 
 set rtp+=/usr/local/opt/fzf
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/nvim-cmp'
@@ -149,4 +150,4 @@ end
 EOF
 
 let g:loaded_python_provider = 0
-let g:python3_host_prog = '~/.asdf/installs/python/3.10.0/bin/python'
+let g:python3_host_prog = '~/.asdf/installs/python/3.10.4/bin/python'
