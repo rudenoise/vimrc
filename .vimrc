@@ -99,6 +99,22 @@ end
 
 local cmp = require'cmp'
 
+  function select_next(fallback)
+    if cmp.visible() then
+      cmp.select_next_item()
+    else
+      fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
+    end
+  end
+  function select_prev(fallback)
+    if cmp.visible() then
+      cmp.select_prev_item()
+    else
+      fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
+    end
+  end
+
+
   cmp.setup({
     snippet = {
       expand = function(args)
@@ -118,6 +134,10 @@ local cmp = require'cmp'
       ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.close(),
       ['<CR>'] = cmp.mapping.confirm({ select = true }),
+      ["<Tab>"] = cmp.mapping(select_next, { "i", "s" }),
+      ["<Down>"] = cmp.mapping(select_next, { "i", "s" }),
+      ["<S-Tab>"] = cmp.mapping(select_prev, { "i", "s" }),
+      ["<Up>"] = cmp.mapping(select_prev, { "i", "s" }),
     },
     sources = {
       { name = 'nvim_lsp' },
