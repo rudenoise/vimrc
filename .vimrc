@@ -38,7 +38,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'jremmen/vim-ripgrep'
 
 " Python bits:
-Plug 'psf/black', { 'branch': 'stable' }
+Plug 'psf/black'
 Plug 'andviro/flake8-vim'
 Plug 'fisadev/vim-isort'
 
@@ -150,4 +150,4 @@ end
 EOF
 
 let g:loaded_python_provider = 0
-let g:python3_host_prog = '~/.asdf/installs/python/3.10.4/bin/python'
+let g:python3_host_prog = '~/.asdf/installs/python/3.10.5/bin/python'
