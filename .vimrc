@@ -52,14 +52,20 @@ Plug 'psf/black'
 Plug 'andviro/flake8-vim'
 Plug 'fisadev/vim-isort'
 
-" Plug 'dense-analysis/ale'
-
+" LSP bits
 Plug 'neovim/nvim-lspconfig'
 
+" Scala bits
+Plug 'nvim-lua/plenary.nvim'
+Plug 'scalameta/nvim-metals'
+
+" Go bits
 " Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " terraform bits
 Plug 'hashivim/vim-terraform'
+
+
 
 " Colour Schemes
 Plug 'jacoborus/tender.vim'
@@ -84,6 +90,18 @@ vim.cmd([[autocmd BufRead,BufNewFile *.tfstate,*.tfstate.backup set filetype=jso
 vim.cmd([[let g:terraform_fmt_on_save=1]])
 vim.cmd([[let g:terraform_align=1]])
 
+
+-- scala stuff
+local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "scala", "sbt", "java" },
+  callback = function()
+    require("metals").initialize_or_attach({})
+  end,
+  group = nvim_metals_group,
+})
+
+-- lsp stuff
 local nvim_lsp = require('lspconfig')
 
 -- Use an on_attach function to only map the following keys
@@ -179,6 +197,7 @@ local cmp = require'cmp'
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
+-- see lsp configs here: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#bashls
 local servers = { 'bashls', 'lua_ls', 'pyright', 'terraformls', 'tflint' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
