@@ -9,3 +9,6 @@ au BufNewFile,BufRead *.py
     \ set autoindent |
     \ set fileformat=unix
 
+let g:loaded_python_provider = 0
+let g:python3_host_prog = '/Users/rudenoise/.asdf/installs/python/3.11.0/bin/python'
+

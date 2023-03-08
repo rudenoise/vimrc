@@ -10,12 +10,22 @@ filetype plugin indent on
 syntax on
 map <Leader>w :set spell wrap linebreak<CR>
 
+" settings for file browsing with Vexplore, Sexplore, Lexplore etxc...
+" https://neovim.io/doc/user/pi_netrw.html#g%3Anetrw_browse_split
+" https://neovim.io/doc/user/pi_netrw.html#netrw-quickcom
+let g:netrw_liststyle = 3
+let g:netrw_banner = 0
+let g:netrw_browse_split = 4
+let g:netrw_winsize = 25
+
 augroup vimrc_autocmds
   autocmd BufEnter * highlight OverLength ctermbg=darkgrey
   autocmd BufEnter * match OverLength /\%80v.*/
 augroup END
 
-au BufRead,BufNewFile *.md setlocal textwidth=78
+" wrap text at 80 chars in md and txt
+au BufRead,BufNewFile *.md setlocal textwidth=80  
+au BufRead,BufNewFile *.txt setlocal textwidth=80
 
 set rtp+=/usr/local/opt/fzf
 
@@ -160,7 +170,7 @@ local cmp = require'cmp'
 local servers = { 'pyright' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
     on_attach = on_attach,
     flags = {
       debounce_text_changes = 150,
@@ -168,6 +178,3 @@ for _, lsp in ipairs(servers) do
   }
 end
 EOF
-
-let g:loaded_python_provider = 0
-let g:python3_host_prog = '~/.asdf/installs/python/3.10.5/bin/python'
