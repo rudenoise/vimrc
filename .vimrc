@@ -198,7 +198,7 @@ local cmp = require'cmp'
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 -- see lsp configs here: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#bashls
-local servers = { 'bashls', 'lua_ls', 'pyright', 'terraformls', 'tflint' }
+local servers = { 'bashls', 'lua_ls', 'pyright', 'terraformls', 'tflint', 'yamlls' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
