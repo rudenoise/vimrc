@@ -9,3 +9,8 @@ Those based on NodeJS:
 ```sh
 npm install -g pyright bash-language-server yaml-language-server
 ```
+
+Those based on python:
+```sh
+pip install ruff-lsp
+```
