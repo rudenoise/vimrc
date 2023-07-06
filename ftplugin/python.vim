@@ -12,4 +12,3 @@ au BufNewFile,BufRead *.py
 let g:loaded_python_provider = 0
 let g:python3_host_prog = '/Users/rudenoise/.asdf/shims/python'
 let g:python_host_prog = '/Users/rudenoise/.asdf/shims/python'
-"let g:python_host_prog = '/Users/rudenoise/.asdf/installs/python/3.11.3/bin/python'
