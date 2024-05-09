@@ -211,7 +211,7 @@ local servers = {
   'bashls',
   'clangd',
   'lua_ls',
-  'pyright',
+--  'pyright',
   'ruff_lsp',
   'sourcekit',
   'terraformls',
