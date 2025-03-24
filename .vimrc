@@ -48,9 +48,10 @@ Plug 'junegunn/fzf.vim'
 Plug 'jremmen/vim-ripgrep'
 
 " Python bits:
-Plug 'psf/black'
-Plug 'andviro/flake8-vim'
-Plug 'fisadev/vim-isort'
+Plug 'karloskar/poetry-nvim'
+" Plug 'psf/black'
+" Plug 'andviro/flake8-vim'
+" Plug 'fisadev/vim-isort'
 
 " LSP bits
 Plug 'neovim/nvim-lspconfig'
@@ -86,6 +87,7 @@ let g:python3_host_prog = '/Users/rudenoise/.asdf/shims/python'
 let g:python_host_prog = '/Users/rudenoise/.asdf/shims/python'
 
 lua << EOF
+
 
 -- setup terraform stuff
 vim.cmd([[silent! autocmd! filetypedetect BufRead,BufNewFile *.tf]])
@@ -212,10 +214,10 @@ local servers = {
   'clangd',
   'lua_ls',
 --  'pyright',
-  'ruff_lsp',
+  'ruff',
   'sourcekit',
   'terraformls',
-  'tsserver',
+  'ts_ls',
   'tflint',
   'yamlls',
   'zls'
@@ -237,7 +239,7 @@ nvim_lsp['pyright'].setup({
     local pipfile_exists = require("lspconfig").util.search_ancestors(root_dir, function(path)
       local pipfile = require("lspconfig").util.path.join(path, "Pipfile")
       if require("lspconfig").util.path.is_file(pipfile) then
-        return true
+          return true
       else
         return false
       end
@@ -249,3 +251,4 @@ nvim_lsp['pyright'].setup({
   end,
 })
 EOF
+
