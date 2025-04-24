@@ -42,12 +42,4 @@ vim.api.nvim_create_autocmd('FileType', {
       update_in_insert = false,
     })
   end
-})
-
--- Set up omnifunc for Python files
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'python',
-  callback = function()
-    vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
-  end
 }) 

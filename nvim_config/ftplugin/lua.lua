@@ -1,5 +1,5 @@
 ---@diagnostic disable: undefined-global
--- Lua filetype settings and LSP configuration
+-- Lua filetype settings
 
 -- Basic Lua settings
 vim.opt_local.expandtab = true
@@ -27,13 +27,5 @@ vim.api.nvim_create_autocmd('FileType', {
       underline = true,
       update_in_insert = false,
     })
-  end
-})
-
--- Set up omnifunc for Lua files
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'lua',
-  callback = function()
-    vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
   end
 }) 
