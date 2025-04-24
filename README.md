@@ -51,8 +51,7 @@ The setup script will:
 nvim_config/
 ├── ftplugin/          # Filetype-specific configurations
 │   ├── lua.lua       # Lua configuration
-│   ├── python.lua    # Python configuration
-│   └── scala.lua     # Scala configuration
+│   └── python.lua    # Python configuration
 ├── lua/              # Core Lua configurations
 │   ├── plugins.lua   # Plugin management
 │   ├── lsp.lua      # LSP configuration

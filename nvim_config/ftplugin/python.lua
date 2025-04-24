@@ -42,4 +42,4 @@ vim.api.nvim_create_autocmd('FileType', {
       update_in_insert = false,
     })
   end
-}) 
+})
