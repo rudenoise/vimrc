@@ -18,8 +18,8 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- Python provider settings
 vim.g.loaded_python_provider = 0
-vim.g.python3_host_prog = '/Users/rudenoise/.asdf/shims/python'
-vim.g.python_host_prog = '/Users/rudenoise/.asdf/shims/python'
+vim.g.python3_host_prog = '/Users/rdns/.asdf/shims/python'
+vim.g.python_host_prog = '/Users/rdns/.asdf/shims/python'
 
 -- Set up LSP diagnostics for Python files
 vim.api.nvim_create_autocmd('FileType', {
