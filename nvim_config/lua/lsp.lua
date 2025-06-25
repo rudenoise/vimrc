@@ -97,4 +97,4 @@ nvim_lsp['pyright'].setup({
       new_config.cmd = { "pipenv", "run", "pyright-langserver", "--stdio" }
     end
   end
-}) 
+})

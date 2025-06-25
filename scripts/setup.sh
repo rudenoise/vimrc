@@ -37,9 +37,46 @@ else
     curl -LsSf https://astral.sh/uv/install.sh | sh
 fi
 
-# Install ruff using uv
+# Install Python packages
+print_message "Installing Python packages..."
+if command_exists asdf; then
+    # Install Python 3.12 if not already installed
+    if ! asdf list python | grep -q "3.12"; then
+        print_message "Installing Python 3.12..."
+        asdf install python 3.12.2
+    fi
+    
+    # Set Python 3.12 as global version
+    print_message "Setting Python 3.12 as global version..."
+    # Try different asdf command syntaxes
+    if asdf global python 3.12.2 2>/dev/null; then
+        echo "Successfully set Python 3.12.2 as global"
+    elif asdf local python 3.12.2 2>/dev/null; then
+        echo "Successfully set Python 3.12.2 as local"
+    else
+        print_message "Warning: Could not set Python version with asdf"
+    fi
+    
+    # Install Python packages using the selected version
+    print_message "Installing Python packages for Neovim..."
+    pip install --user msgpack
+    pip install --user neovim
+    pip install --user python-lsp-server
+    
+    # Verify the installation
+    print_message "Verifying Python provider installation..."
+    python -c "import neovim; print('neovim package is installed at:', neovim.__file__)"
+fi
+
+# Install ruff using the correct Python version
 print_message "Installing ruff..."
-uv tool install ruff@latest
+if command_exists uv; then
+    # Use uv run to ensure the correct Python version is used
+    uv run --python 3.12 pip install ruff
+else
+    print_message "uv not found, installing ruff via pip..."
+    pip install --user ruff
+fi
 
 # Install packer.nvim if not already installed
 print_message "Checking for packer.nvim..."
@@ -55,29 +92,6 @@ if command_exists npm; then
     npm install -g vscode-langservers-extracted
     npm install -g yaml-language-server
     npm install -g neovim
-fi
-
-# Install Python packages
-print_message "Installing Python packages..."
-if command_exists asdf; then
-    # Install Python 3.12 if not already installed
-    if ! asdf list python | grep -q "3.12"; then
-        print_message "Installing Python 3.12..."
-        asdf install python 3.12.2
-    fi
-    
-    # Set Python 3.12 as global version
-    asdf set -u python 3.12.2
-    
-    # Install Python packages using the selected version
-    print_message "Installing Python packages for Neovim..."
-    pip install --user msgpack
-    pip install --user neovim
-    pip install --user python-lsp-server
-    
-    # Verify the installation
-    print_message "Verifying Python provider installation..."
-    python -c "import neovim; print('neovim package is installed at:', neovim.__file__)"
 fi
 
 print_message "Installing plugins..."

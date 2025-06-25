@@ -49,8 +49,8 @@ local function save_profiles(threshold)
 end
 
 time([[Luarocks path setup]], true)
-local package_path_str = "/Users/rdns/.cache/nvim/packer_hererocks/2.1.1744318430/share/lua/5.1/?.lua;/Users/rdns/.cache/nvim/packer_hererocks/2.1.1744318430/share/lua/5.1/?/init.lua;/Users/rdns/.cache/nvim/packer_hererocks/2.1.1744318430/lib/luarocks/rocks-5.1/?.lua;/Users/rdns/.cache/nvim/packer_hererocks/2.1.1744318430/lib/luarocks/rocks-5.1/?/init.lua"
-local install_cpath_pattern = "/Users/rdns/.cache/nvim/packer_hererocks/2.1.1744318430/lib/lua/5.1/?.so"
+local package_path_str = "/Users/rdns/.cache/nvim/packer_hererocks/2.1.1748459687/share/lua/5.1/?.lua;/Users/rdns/.cache/nvim/packer_hererocks/2.1.1748459687/share/lua/5.1/?/init.lua;/Users/rdns/.cache/nvim/packer_hererocks/2.1.1748459687/lib/luarocks/rocks-5.1/?.lua;/Users/rdns/.cache/nvim/packer_hererocks/2.1.1748459687/lib/luarocks/rocks-5.1/?/init.lua"
+local install_cpath_pattern = "/Users/rdns/.cache/nvim/packer_hererocks/2.1.1748459687/lib/lua/5.1/?.so"
 if not string.find(package.path, package_path_str, 1, true) then
   package.path = package.path .. ';' .. package_path_str
 end
@@ -134,6 +134,12 @@ _G.packer_plugins = {
     path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/tender.vim",
     url = "https://github.com/jacoborus/tender.vim"
   },
+  ["uv.nvim"] = {
+    config = { "\27LJ\2\n0\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\auv\frequire\0" },
+    loaded = true,
+    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/uv.nvim",
+    url = "https://github.com/benomahony/uv.nvim"
+  },
   ["vim-color-spring-night"] = {
     loaded = true,
     path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/vim-color-spring-night",
@@ -162,6 +168,10 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: uv.nvim
+time([[Config for uv.nvim]], true)
+try_loadstring("\27LJ\2\n0\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\auv\frequire\0", "config", "uv.nvim")
+time([[Config for uv.nvim]], false)
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then

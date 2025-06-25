@@ -28,6 +28,14 @@ return require('packer').startup(function(use)
   use 'scalameta/nvim-metals'
   use 'hashivim/vim-terraform'
 
+  -- python
+  use {
+    'benomahony/uv.nvim',
+    config = function()
+      require('uv').setup()
+    end
+  }
+
   -- Colorschemes
   use 'jacoborus/tender.vim'
   use 'rhysd/vim-color-spring-night'
