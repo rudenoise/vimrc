@@ -1,5 +1,9 @@
--- Basic settings
 ---@diagnostic disable: undefined-global
+
+-- ============================================================================
+-- Basic Settings
+-- ============================================================================
+
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.shiftwidth = 2
@@ -11,19 +15,31 @@ vim.opt.backspace = 'indent,eol,start'
 vim.opt.cursorline = true
 vim.opt.cursorcolumn = true
 
--- Enable filetype detection and plugins
-vim.cmd('filetype plugin on')
+-- ============================================================================
+-- Filetype & Syntax
+-- ============================================================================
+
 vim.cmd('filetype plugin indent on')
 vim.cmd('syntax on')
 
--- Set up spell checking
+-- ============================================================================
+-- Key Mappings
+-- ============================================================================
+
 vim.keymap.set('n', '<Leader>w', ':set spell wrap linebreak<CR>', { silent = true })
 
--- File browsing settings
+-- ============================================================================
+-- File Browsing (netrw)
+-- ============================================================================
+
 vim.g.netrw_liststyle = 3
 vim.g.netrw_banner = 0
 vim.g.netrw_browse_split = 4
 vim.g.netrw_winsize = 25
+
+-- ============================================================================
+-- Autocommands
+-- ============================================================================
 
 -- Overlength highlighting
 vim.cmd([[
@@ -33,25 +49,31 @@ vim.cmd([[
   augroup END
 ]])
 
--- Text width settings for markdown and text files
+-- Text width for markdown and text files
 vim.cmd([[
-  au BufRead,BufNewFile *.md setlocal textwidth=80
-  au BufRead,BufNewFile *.txt setlocal textwidth=80
+  augroup textwidth
+    autocmd BufRead,BufNewFile *.md,*.txt setlocal textwidth=80
+  augroup END
 ]])
 
--- Set up Python providers
+-- ============================================================================
+-- Python Provider
+-- ============================================================================
+
 vim.g.loaded_python_provider = 0
-vim.g.python3_host_prog = '/Users/rdns/.asdf/shims/python'
-vim.g.python_host_prog = '/Users/rdns/.asdf/shims/python'
+vim.g.python3_host_prog = '/Users/joel.hughes/.pyenv/shims/python3'
+vim.g.python_host_prog = '/Users/joel.hughes/.pyenv/shims/python3'
 
--- Load plugins using packer.nvim
+-- ============================================================================
+-- Plugin Loading
+-- ============================================================================
+
 require('plugins')
-
--- Load LSP configuration
 require('lsp')
-
--- Load completion configuration
 require('completion')
 
--- Set colorscheme
+-- ============================================================================
+-- Colorscheme
+-- ============================================================================
+
 vim.cmd('colorscheme tender')

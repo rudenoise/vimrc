@@ -38,41 +38,28 @@ else
 fi
 
 # Install Python packages
-print_message "Installing Python packages..."
-if command_exists asdf; then
-    # Install Python 3.12 if not already installed
-    if ! asdf list python | grep -q "3.12"; then
-        print_message "Installing Python 3.12..."
-        asdf install python 3.12.2
-    fi
-    
-    # Set Python 3.12 as global version
-    print_message "Setting Python 3.12 as global version..."
-    # Try different asdf command syntaxes
-    if asdf global python 3.12.2 2>/dev/null; then
-        echo "Successfully set Python 3.12.2 as global"
-    elif asdf local python 3.12.2 2>/dev/null; then
-        echo "Successfully set Python 3.12.2 as local"
-    else
-        print_message "Warning: Could not set Python version with asdf"
-    fi
-    
-    # Install Python packages using the selected version
-    print_message "Installing Python packages for Neovim..."
+print_message "Installing Python packages for Neovim..."
+if command_exists uv; then
+    # Use uv pip install with --system flag to install system-wide
+    uv pip install --system msgpack
+    uv pip install --system neovim
+    uv pip install --system python-lsp-server
+else
+    # Fallback to regular pip if uv is not available
     pip install --user msgpack
     pip install --user neovim
     pip install --user python-lsp-server
-    
-    # Verify the installation
-    print_message "Verifying Python provider installation..."
-    python -c "import neovim; print('neovim package is installed at:', neovim.__file__)"
 fi
 
-# Install ruff using the correct Python version
+# Verify the installation
+print_message "Verifying Python provider installation..."
+python3 -c "import neovim; print('neovim package is installed at:', neovim.__file__)" || python -c "import neovim; print('neovim package is installed at:', neovim.__file__)"
+
+# Install ruff using the correct method
 print_message "Installing ruff..."
 if command_exists uv; then
-    # Use uv run to ensure the correct Python version is used
-    uv run --python 3.12 pip install ruff
+    # Use uv tool install for ruff (recommended way with uv)
+    uv tool install ruff || uv pip install --system ruff
 else
     print_message "uv not found, installing ruff via pip..."
     pip install --user ruff

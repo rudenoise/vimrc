@@ -49,8 +49,8 @@ local function save_profiles(threshold)
 end
 
 time([[Luarocks path setup]], true)
-local package_path_str = "/Users/rdns/.cache/nvim/packer_hererocks/2.1.1748459687/share/lua/5.1/?.lua;/Users/rdns/.cache/nvim/packer_hererocks/2.1.1748459687/share/lua/5.1/?/init.lua;/Users/rdns/.cache/nvim/packer_hererocks/2.1.1748459687/lib/luarocks/rocks-5.1/?.lua;/Users/rdns/.cache/nvim/packer_hererocks/2.1.1748459687/lib/luarocks/rocks-5.1/?/init.lua"
-local install_cpath_pattern = "/Users/rdns/.cache/nvim/packer_hererocks/2.1.1748459687/lib/lua/5.1/?.so"
+local package_path_str = "/Users/joel.hughes/.cache/nvim/packer_hererocks/2.1.1765228720/share/lua/5.1/?.lua;/Users/joel.hughes/.cache/nvim/packer_hererocks/2.1.1765228720/share/lua/5.1/?/init.lua;/Users/joel.hughes/.cache/nvim/packer_hererocks/2.1.1765228720/lib/luarocks/rocks-5.1/?.lua;/Users/joel.hughes/.cache/nvim/packer_hererocks/2.1.1765228720/lib/luarocks/rocks-5.1/?/init.lua"
+local install_cpath_pattern = "/Users/joel.hughes/.cache/nvim/packer_hererocks/2.1.1765228720/lib/lua/5.1/?.so"
 if not string.find(package.path, package_path_str, 1, true) then
   package.path = package.path .. ';' .. package_path_str
 end
@@ -76,93 +76,93 @@ time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
   ["cmp-buffer"] = {
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/cmp-buffer",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/cmp-buffer",
     url = "https://github.com/hrsh7th/cmp-buffer"
   },
   ["cmp-nvim-lsp"] = {
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
     url = "https://github.com/hrsh7th/cmp-nvim-lsp"
   },
   ["cmp-vsnip"] = {
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/cmp-vsnip",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/cmp-vsnip",
     url = "https://github.com/hrsh7th/cmp-vsnip"
   },
   fzf = {
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/fzf",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/fzf",
     url = "https://github.com/junegunn/fzf"
   },
   ["fzf.vim"] = {
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/fzf.vim",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/fzf.vim",
     url = "https://github.com/junegunn/fzf.vim"
   },
   ["nvim-cmp"] = {
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/nvim-cmp",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/nvim-cmp",
     url = "https://github.com/hrsh7th/nvim-cmp"
   },
   ["nvim-lspconfig"] = {
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
   },
   ["nvim-metals"] = {
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/nvim-metals",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/nvim-metals",
     url = "https://github.com/scalameta/nvim-metals"
   },
   ["oceanic-material"] = {
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/oceanic-material",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/oceanic-material",
     url = "https://github.com/glepnir/oceanic-material"
   },
   ["packer.nvim"] = {
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/packer.nvim",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/packer.nvim",
     url = "https://github.com/wbthomason/packer.nvim"
   },
   ["plenary.nvim"] = {
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/plenary.nvim",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
   ["tender.vim"] = {
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/tender.vim",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/tender.vim",
     url = "https://github.com/jacoborus/tender.vim"
   },
   ["uv.nvim"] = {
     config = { "\27LJ\2\n0\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\auv\frequire\0" },
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/uv.nvim",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/uv.nvim",
     url = "https://github.com/benomahony/uv.nvim"
   },
   ["vim-color-spring-night"] = {
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/vim-color-spring-night",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/vim-color-spring-night",
     url = "https://github.com/rhysd/vim-color-spring-night"
   },
   ["vim-ripgrep"] = {
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/vim-ripgrep",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/vim-ripgrep",
     url = "https://github.com/jremmen/vim-ripgrep"
   },
   ["vim-terraform"] = {
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/vim-terraform",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/vim-terraform",
     url = "https://github.com/hashivim/vim-terraform"
   },
   ["vim-vsnip"] = {
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/vim-vsnip",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/vim-vsnip",
     url = "https://github.com/hrsh7th/vim-vsnip"
   },
   ["zig.vim"] = {
     loaded = true,
-    path = "/Users/rdns/.local/share/nvim/site/pack/packer/start/zig.vim",
+    path = "/Users/joel.hughes/.local/share/nvim/site/pack/packer/start/zig.vim",
     url = "https://github.com/ziglang/zig.vim"
   }
 }

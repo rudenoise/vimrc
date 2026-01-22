@@ -1,65 +1,98 @@
 ---@diagnostic disable: undefined-global
-local nvim_lsp = require('lspconfig')
 
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-  -- Mark client as unused to avoid linter warning
-  _ = client
+-- ============================================================================
+-- LSP Configuration
+-- ============================================================================
 
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+-- Suppress deprecation warnings from lspconfig
+-- The warning is triggered when accessing lspconfig[lsp] via the metatable
+-- We suppress all WARN level messages during server setup
+local original_notify = vim.notify
+local in_server_setup = false
 
-  -- Enable completion triggered by <c-x><c-o>
+vim.notify = function(msg, level, opts)
+  if in_server_setup and level == vim.log.levels.WARN then
+    return
+  end
+  return original_notify(msg, level, opts)
+end
+
+-- Load lspconfig (deprecation warnings suppressed during server setup)
+local lspconfig = require('lspconfig')
+
+-- ============================================================================
+-- LSP Key Mappings
+-- ============================================================================
+
+local function on_attach(client, bufnr)
+  _ = client -- Mark as used to avoid linter warning
+
+  local buf_set_keymap = function(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local buf_set_option = function(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+  local opts = { noremap = true, silent = true }
+
+  -- Enable completion
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  -- Mappings.
-  local opts = { noremap=true, silent=true }
-
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  -- Navigation
   buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
   buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+
+  -- Workspace
   buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
   buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+
+  -- Actions
   buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
+
+  -- Diagnostics
   buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setqflist()<CR>', opts)
-  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
-  
-  -- Add shortcut to display errors and warnings
   buf_set_keymap('n', '<leader>d', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
   buf_set_keymap('n', '<leader>l', '<cmd>lua vim.diagnostic.setqflist()<CR>', opts)
 end
 
--- Setup terraform stuff
-vim.cmd([[silent! autocmd! filetypedetect BufRead,BufNewFile *.tf]])
-vim.cmd([[autocmd BufRead,BufNewFile *.hcl set filetype=hcl]])
-vim.cmd([[autocmd BufRead,BufNewFile .terraformrc,terraform.rc set filetype=hcl]])
-vim.cmd([[autocmd BufRead,BufNewFile *.tf,*.tfvars set filetype=terraform]])
-vim.cmd([[autocmd BufRead,BufNewFile *.tfstate,*.tfstate.backup set filetype=json]])
-vim.cmd([[let g:terraform_fmt_on_save=1]])
-vim.cmd([[let g:terraform_align=1]])
+-- ============================================================================
+-- Language-Specific Setup
+-- ============================================================================
 
--- Setup scala stuff
-local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
+-- Terraform filetype detection
+vim.cmd([[
+  silent! autocmd! filetypedetect BufRead,BufNewFile *.tf
+  autocmd BufRead,BufNewFile *.hcl set filetype=hcl
+  autocmd BufRead,BufNewFile .terraformrc,terraform.rc set filetype=hcl
+  autocmd BufRead,BufNewFile *.tf,*.tfvars set filetype=terraform
+  autocmd BufRead,BufNewFile *.tfstate,*.tfstate.backup set filetype=json
+  let g:terraform_fmt_on_save=1
+  let g:terraform_align=1
+]])
+
+-- Scala/Metals setup
+local metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "scala", "sbt", "java" },
   callback = function()
     require("metals").initialize_or_attach({})
   end,
-  group = nvim_metals_group,
+  group = metals_group,
 })
 
--- Setup LSP servers
+-- ============================================================================
+-- LSP Server Configuration
+-- ============================================================================
+
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+
 local servers = {
   'bashls',
   'clangd',
@@ -70,35 +103,34 @@ local servers = {
   'ts_ls',
   'tflint',
   'yamlls',
-  'zls'
+  'zls',
 }
 
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
-    capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+-- Setup common servers
+in_server_setup = true
+for _, server_name in ipairs(servers) do
+  lspconfig[server_name].setup({
+    capabilities = capabilities,
     on_attach = on_attach,
     flags = {
       debounce_text_changes = 150,
-    }
-  }
+    },
+  })
 end
+in_server_setup = false
 
--- Special setup for pyright
-nvim_lsp['pyright'].setup({
-  on_attach = on_attach,
+-- Pyright with Pipfile support
+lspconfig.pyright.setup({
   capabilities = capabilities,
+  on_attach = on_attach,
   on_new_config = function(new_config, root_dir)
-    local pipfile_exists = require("lspconfig").util.search_ancestors(root_dir, function(path)
-      local pipfile = require("lspconfig").util.path.join(path, "Pipfile")
-      if require("lspconfig").util.path.is_file(pipfile) then
-        return true
-      else
-        return false
-      end
-    end)
-
-    if pipfile_exists then
+    local util = require("lspconfig").util
+    local pipfile_path = util.path.join(root_dir, "Pipfile")
+    if util.path.is_file(pipfile_path) then
       new_config.cmd = { "pipenv", "run", "pyright-langserver", "--stdio" }
     end
-  end
+  end,
 })
+
+-- Restore original notify function
+vim.notify = original_notify
