@@ -2,103 +2,164 @@
 
 set -euo pipefail
 
-# Function to print colored output
-print_message() {
-    echo -e "\033[1;34m$1\033[0m"
+# --- Helpers ---
+
+print_header() { echo -e "\n\033[1;34m==> $1\033[0m"; }
+print_ok()     { echo -e "  \033[0;32m✓ $1\033[0m"; }
+print_warn()   { echo -e "  \033[0;33m! $1\033[0m"; }
+print_install(){ echo -e "  \033[0;36m+ Installing $1...\033[0m"; }
+
+command_exists() { command -v "$1" &>/dev/null; }
+
+# Install a binary via npm if it's not already on PATH
+ensure_npm() {
+    local cmd="$1"
+    shift
+    if command_exists "$cmd"; then
+        print_ok "$cmd ($(command -v "$cmd"))"
+    else
+        print_install "$cmd (npm)"
+        npm install -g "$@"
+    fi
 }
 
-# Function to check if a command exists
-command_exists() {
-    command -v "$1" &> /dev/null
+# Install a binary via brew if it's not already on PATH
+ensure_brew() {
+    local cmd="$1"
+    local formula="${2:-$1}"
+    if command_exists "$cmd"; then
+        print_ok "$cmd ($(command -v "$cmd"))"
+    else
+        if ! command_exists brew; then
+            print_warn "$cmd not found and brew is not available — skipping"
+            return
+        fi
+        print_install "$cmd (brew)"
+        brew install "$formula"
+    fi
 }
 
-print_message "Setting up Neovim configuration..."
+# Install a binary via pip/uv if it's not already on PATH
+ensure_pip() {
+    local cmd="$1"
+    local pkg="${2:-$1}"
+    if command_exists "$cmd"; then
+        print_ok "$cmd ($(command -v "$cmd"))"
+    else
+        print_install "$cmd (pip)"
+        if command_exists uv; then
+            uv tool install "$pkg"
+        else
+            pip install --user "$pkg"
+        fi
+    fi
+}
 
-# Create .config directory if it doesn't exist
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(dirname "$SCRIPT_DIR")"
+
+# --- Symlink nvim config ---
+
+print_header "Neovim config symlink"
 mkdir -p ~/.config
-
-# Remove existing symlink if it exists
-if [ -L ~/.config/nvim ]; then
-    print_message "Removing existing symlink..."
-    rm ~/.config/nvim
+if [ "$(readlink ~/.config/nvim 2>/dev/null)" = "$REPO_DIR/nvim_config" ]; then
+    print_ok "~/.config/nvim already points to $REPO_DIR/nvim_config"
+else
+    ln -nfs "$REPO_DIR/nvim_config" ~/.config/nvim
+    print_ok "Linked ~/.config/nvim -> $REPO_DIR/nvim_config"
 fi
 
-# Create new symlink
-print_message "Creating symlink to nvim_config..."
-ln -nfs "$(pwd)/nvim_config" ~/.config/nvim
+# --- Core tools ---
 
-# Check and install uv if needed
-print_message "Checking for uv installation..."
+print_header "Core tools"
+
+# uv (Python toolchain)
 if command_exists uv; then
-    echo "uv is already installed"
-    uv --version
+    print_ok "uv ($(uv --version))"
 else
-    print_message "Installing uv..."
+    print_install "uv"
     curl -LsSf https://astral.sh/uv/install.sh | sh
 fi
 
-# Install Python packages
-print_message "Installing Python packages..."
-if command_exists asdf; then
-    # Install Python 3.12 if not already installed
-    if ! asdf list python | grep -q "3.12"; then
-        print_message "Installing Python 3.12..."
-        asdf install python 3.12.2
-    fi
-    
-    # Set Python 3.12 as global version
-    print_message "Setting Python 3.12 as global version..."
-    # Try different asdf command syntaxes
-    if asdf global python 3.12.2 2>/dev/null; then
-        echo "Successfully set Python 3.12.2 as global"
-    elif asdf local python 3.12.2 2>/dev/null; then
-        echo "Successfully set Python 3.12.2 as local"
-    else
-        print_message "Warning: Could not set Python version with asdf"
-    fi
-    
-    # Install Python packages using the selected version
-    print_message "Installing Python packages for Neovim..."
-    pip install --user msgpack
-    pip install --user neovim
-    pip install --user python-lsp-server
-    
-    # Verify the installation
-    print_message "Verifying Python provider installation..."
-    python -c "import neovim; print('neovim package is installed at:', neovim.__file__)"
-fi
-
-# Install ruff using the correct Python version
-print_message "Installing ruff..."
-if command_exists uv; then
-    # Use uv run to ensure the correct Python version is used
-    uv run --python 3.12 pip install ruff
-else
-    print_message "uv not found, installing ruff via pip..."
-    pip install --user ruff
-fi
-
-# Install packer.nvim if not already installed
-print_message "Checking for packer.nvim..."
-if [ ! -d ~/.local/share/nvim/site/pack/packer/start/packer.nvim ]; then
-    print_message "Installing packer.nvim..."
-    git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-fi
-
-# Install LSP servers
-print_message "Installing LSP servers..."
+# npm (needed for many LSP servers)
 if command_exists npm; then
-    npm install -g typescript typescript-language-server
-    npm install -g vscode-langservers-extracted
-    npm install -g yaml-language-server
-    npm install -g neovim
+    print_ok "npm ($(npm --version))"
+else
+    print_warn "npm not found — npm-based LSP servers will be skipped"
 fi
 
-print_message "Installing plugins..."
+# --- Python packages for Neovim ---
+
+print_header "Python packages"
+ensure_pip ruff
+ensure_pip pyright
+
+# neovim python provider
+if python3 -c "import neovim" 2>/dev/null; then
+    print_ok "pynvim"
+else
+    print_install "pynvim"
+    pip install --user pynvim
+fi
+
+# --- LSP servers ---
+# These match the servers list in nvim_config/lua/lsp.lua:
+#   bashls, clangd, lua_ls, ruff, sourcekit, terraformls,
+#   ts_ls, tflint, yamlls, zls, pyright
+
+print_header "LSP servers (npm)"
+if command_exists npm; then
+    ensure_npm bash-language-server       bash-language-server
+    ensure_npm typescript-language-server  typescript typescript-language-server
+    ensure_npm yaml-language-server        yaml-language-server
+    ensure_npm vscode-json-language-server vscode-langservers-extracted
+    # neovim npm package doesn't provide a CLI binary — check npm list instead
+    if npm list -g neovim &>/dev/null; then
+        print_ok "neovim (npm)"
+    else
+        print_install "neovim (npm)"
+        npm install -g neovim
+    fi
+fi
+
+print_header "LSP servers (brew)"
+ensure_brew lua-language-server
+ensure_brew terraform-ls
+ensure_brew tflint
+ensure_brew zls
+
+# clangd and sourcekit-lsp come with Xcode on macOS
+print_header "LSP servers (system)"
+if command_exists clangd; then
+    print_ok "clangd (Xcode)"
+else
+    print_warn "clangd not found — install Xcode Command Line Tools (xcode-select --install)"
+fi
+
+if command_exists sourcekit-lsp; then
+    print_ok "sourcekit-lsp (Xcode)"
+else
+    print_warn "sourcekit-lsp not found — install Xcode"
+fi
+
+# --- Packer ---
+
+print_header "Plugin manager"
+PACKER_DIR="$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim"
+if [ -d "$PACKER_DIR" ]; then
+    print_ok "packer.nvim already installed"
+else
+    print_install "packer.nvim"
+    git clone --depth 1 https://github.com/wbthomason/packer.nvim "$PACKER_DIR"
+fi
+
+# --- Sync plugins ---
+
+print_header "Syncing plugins"
 nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
-print_message "Running Neovim healthcheck..."
-nvim --headless -c 'checkhealth' -c 'quitall'
+# --- Done ---
 
-print_message "Neovim configuration setup complete!"
-print_message "Your Neovim configuration is now symlinked to: $(pwd)/nvim_config"
+echo ""
+print_header "Setup complete!"
+echo "  Config: ~/.config/nvim -> $REPO_DIR/nvim_config"
