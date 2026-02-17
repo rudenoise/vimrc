@@ -104,8 +104,8 @@ fi
 
 # --- LSP servers ---
 # These match the servers list in nvim_config/lua/lsp.lua:
-#   bashls, clangd, lua_ls, ruff, sourcekit, terraformls,
-#   ts_ls, tflint, yamlls, zls, pyright
+#   bashls, clangd, lua_ls, ruff, rust_analyzer, sourcekit,
+#   terraformls, ts_ls, tflint, yamlls, zls, pyright
 
 print_header "LSP servers (npm)"
 if command_exists npm; then
@@ -140,6 +140,19 @@ if command_exists sourcekit-lsp; then
     print_ok "sourcekit-lsp (Xcode)"
 else
     print_warn "sourcekit-lsp not found — install Xcode"
+fi
+
+print_header "LSP servers (rust)"
+if command_exists rust-analyzer; then
+    print_ok "rust-analyzer ($(command -v rust-analyzer))"
+elif command_exists rustup; then
+    print_install "rust-analyzer (rustup)"
+    rustup component add rust-analyzer
+elif command_exists brew; then
+    print_install "rust-analyzer (brew)"
+    brew install rust-analyzer
+else
+    print_warn "rust-analyzer not found — install rustup (https://rustup.rs) and run: rustup component add rust-analyzer"
 fi
 
 # --- Packer ---

@@ -27,6 +27,22 @@ vim.lsp.config('pyright', {
   end,
 })
 
+vim.lsp.config('rust_analyzer', {
+  settings = {
+    ['rust-analyzer'] = {
+      check = {
+        command = 'clippy',
+      },
+      cargo = {
+        allFeatures = true,
+      },
+      procMacro = {
+        enable = true,
+      },
+    },
+  },
+})
+
 -- Enable all LSP servers
 -- These must be installed on the system (see scripts/setup.sh)
 vim.lsp.enable({
@@ -35,6 +51,7 @@ vim.lsp.enable({
   'lua_ls',
   'pyright',
   'ruff',
+  'rust_analyzer',
   'sourcekit',
   'terraformls',
   'tflint',
