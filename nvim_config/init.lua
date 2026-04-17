@@ -41,7 +41,7 @@ vim.cmd([[
 
 -- Set up Python providers
 vim.g.loaded_python_provider = 0
-vim.g.python3_host_prog = '/Users/rdns/.local/share/mise/shims/python3'
+vim.g.python3_host_prog = vim.fn.expand('~/.local/share/nvim/python3/bin/python')
 
 -- Load plugins using packer.nvim
 require('plugins')

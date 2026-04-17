@@ -94,12 +94,15 @@ print_header "Python packages"
 ensure_pip ruff
 ensure_pip pyright
 
-# neovim python provider
-if python3 -c "import neovim" 2>/dev/null; then
-    print_ok "pynvim"
+# neovim python provider (dedicated venv)
+NVIM_PYTHON_VENV="$HOME/.local/share/nvim/python3"
+NVIM_PYTHON="$NVIM_PYTHON_VENV/bin/python"
+if [ -x "$NVIM_PYTHON" ] && "$NVIM_PYTHON" -c "import neovim" 2>/dev/null; then
+    print_ok "pynvim ($NVIM_PYTHON)"
 else
-    print_install "pynvim"
-    pip install --user pynvim
+    print_install "pynvim (venv: $NVIM_PYTHON_VENV)"
+    uv venv "$NVIM_PYTHON_VENV"
+    uv pip install --python "$NVIM_PYTHON" pynvim
 fi
 
 # --- LSP servers ---
