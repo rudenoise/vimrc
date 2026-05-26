@@ -10,6 +10,7 @@ vim.opt.writebackup = false
 vim.opt.backspace = 'indent,eol,start'
 vim.opt.cursorline = true
 vim.opt.cursorcolumn = true
+vim.opt.rtp:append('/opt/homebrew/opt/fzf')
 
 -- Enable filetype detection and plugins
 vim.cmd('filetype plugin on')
